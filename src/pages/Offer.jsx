@@ -148,7 +148,7 @@ export default function OfferPage() {
             <Button variant="outline" size="sm" onClick={() => setEditPrices(!editPrices)}>
               <Settings className="w-4 h-4 mr-1" /> Ceny
             </Button>
-            <Button onClick={handleExportPdf} disabled={exporting} className="bg-emerald-600 hover:bg-emerald-700">
+            <Button onClick={handleExportPdf} disabled={exporting} className="bg-[#00C981] hover:bg-[#00B873]">
               {exporting ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Download className="w-4 h-4 mr-2" />}
               {exporting ? 'Generuji...' : 'Export do PDF'}
             </Button>
@@ -179,7 +179,7 @@ export default function OfferPage() {
             {[['name','Jméno / Firma','Jan Novák'],['address','Adresa','Ulice 1, Praha'],['email','Email','jan@example.cz'],['phone','Telefon','+420 ...']]
               .map(([field, label, placeholder]) => (
                 <input key={field} type="text" placeholder={placeholder}
-                  className="w-full bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-sm text-slate-700 focus:outline-none focus:ring-1 focus:ring-emerald-400"
+                  className="w-full bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-sm text-slate-700 focus:outline-none focus:ring-1 focus:ring-[#00C981]"
                   value={customer[field] || ''} onChange={e => setCustomerField(field, e.target.value)} />
               ))}
           </div>
@@ -202,13 +202,13 @@ export default function OfferPage() {
                     value={item.unit} onChange={e => setItem(idx, 'unit', e.target.value)} />
                   <input type="number" className="w-24 text-sm text-right bg-transparent border border-slate-200 rounded px-2 py-1 focus:outline-none"
                     value={item.unitPrice} onChange={e => setItem(idx, 'unitPrice', e.target.value)} />
-                  <div className="w-28 text-right font-bold text-emerald-600 text-sm">{fmt(lineTotal)} Kč</div>
+                  <div className="w-28 text-right font-bold text-[#00A66F] text-sm">{fmt(lineTotal)} Kč</div>
                   <button onClick={() => removeItem(idx)} className="text-slate-300 hover:text-red-400 text-lg leading-none">×</button>
                 </div>
               );
             })}
           </div>
-          <button onClick={addItem} className="mt-3 text-sm text-emerald-600 hover:text-emerald-700 font-medium">+ Přidat položku</button>
+          <button onClick={addItem} className="mt-3 text-sm text-[#00A66F] hover:text-[#00B873] font-medium">+ Přidat položku</button>
         </div>
 
         {/* === PDF PREVIEW (read-only, captured by html2canvas) === */}
@@ -231,10 +231,10 @@ export default function OfferPage() {
 
           {/* Supplier + Customer */}
           <div style={{ padding: '24px 40px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', borderBottom: '1px solid #e2e8f0' }}>
-            <div style={{ backgroundColor: '#16a34a', borderRadius: '10px', padding: '18px 20px' }}>
-              <div style={{ fontSize: '10px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.08em', color: '#bbf7d0', marginBottom: '6px' }}>Dodavatel</div>
+            <div style={{ backgroundColor: '#00C981', borderRadius: '10px', padding: '18px 20px' }}>
+              <div style={{ fontSize: '10px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.08em', color: '#e3fbf0', marginBottom: '6px' }}>Dodavatel</div>
               <div style={{ fontSize: '14px', fontWeight: 'bold', color: '#ffffff', marginBottom: '6px' }}>{SUPPLIER.name}</div>
-              <div style={{ fontSize: '12px', color: '#bbf7d0', lineHeight: '1.8' }}>
+              <div style={{ fontSize: '12px', color: '#e3fbf0', lineHeight: '1.8' }}>
                 {SUPPLIER.street}<br />{SUPPLIER.city}<br />{SUPPLIER.country}
               </div>
             </div>
@@ -270,17 +270,17 @@ export default function OfferPage() {
                   <div style={{ fontSize: '13px', fontWeight: '600', color: '#1e293b' }}>{item.label}</div>
                   <div style={{ fontSize: '12px', color: '#64748b', textAlign: 'center' }}>{item.qty} {item.unit}</div>
                   <div style={{ fontSize: '12px', color: '#64748b', textAlign: 'right' }}>{fmt(item.unitPrice)} Kč</div>
-                  <div style={{ fontSize: '13px', fontWeight: 'bold', color: '#16a34a', textAlign: 'right' }}>{fmt(lineTotal)} Kč</div>
+                  <div style={{ fontSize: '13px', fontWeight: 'bold', color: '#00C981', textAlign: 'right' }}>{fmt(lineTotal)} Kč</div>
                 </div>
               );
             })}
           </div>
 
           {/* Total */}
-          <div style={{ backgroundColor: '#16a34a', padding: '24px 40px', textAlign: 'right' }}>
-            <div style={{ fontSize: '12px', color: '#bbf7d0', marginBottom: '4px' }}>Celková cena s DPH 21 %</div>
+          <div style={{ backgroundColor: '#00C981', padding: '24px 40px', textAlign: 'right' }}>
+            <div style={{ fontSize: '12px', color: '#e3fbf0', marginBottom: '4px' }}>Celková cena s DPH 21 %</div>
             <div style={{ fontSize: '32px', fontWeight: 'bold', color: '#ffffff', lineHeight: '1.2' }}>{fmt(totalWithVat)} Kč</div>
-            <div style={{ fontSize: '12px', color: '#bbf7d0', marginTop: '4px' }}>
+            <div style={{ fontSize: '12px', color: '#e3fbf0', marginTop: '4px' }}>
               ( {fmt(total)} Kč bez DPH, DPH {fmt(vat)} Kč )
             </div>
           </div>
