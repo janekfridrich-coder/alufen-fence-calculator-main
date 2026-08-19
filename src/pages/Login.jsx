@@ -29,7 +29,7 @@ export default function Login() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-black p-4">
-      <Card className="w-full max-w-sm border-neutral-800">
+      <Card className="w-full max-w-sm border-neutral-800 bg-transparent border-0 shadow-none text-white">
         <CardHeader className="items-center text-center">
           <img src={ALUFEN_LOGO_URL} alt="Alufen" className="h-12 w-auto mx-auto mb-2" />
           <CardTitle>Přihlášení – Alufen Kalkulačka plotů</CardTitle>
