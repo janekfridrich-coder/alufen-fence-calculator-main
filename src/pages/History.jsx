@@ -8,17 +8,32 @@ import { format } from 'date-fns';
 export default function HistoryPage() {
   const [plans, setPlans] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
-    CuttingPlan.list('-created_date').then(data => {
-      setPlans(data);
-      setLoading(false);
-    });
+    CuttingPlan.list('-created_date')
+      .then(data => {
+        setPlans(data);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error('Načtení historie výpočtů selhalo:', err);
+        setError(
+          (err && (err.message || err.error_description || err.details)) ||
+          'Historii výpočtů se nepodařilo načíst. Zkontrolujte připojení k internetu a zkuste to znovu.'
+        );
+        setLoading(false);
+      });
   }, []);
 
   const handleDelete = async (id) => {
-    await CuttingPlan.delete(id);
-    setPlans(prev => prev.filter(p => p.id !== id));
+    try {
+      await CuttingPlan.delete(id);
+      setPlans(prev => prev.filter(p => p.id !== id));
+    } catch (err) {
+      console.error('Smazání výpočtu selhalo:', err);
+      alert((err && err.message) || 'Smazání výpočtu se nezdařilo.');
+    }
   };
 
   return (
@@ -34,6 +49,10 @@ export default function HistoryPage() {
 
         {loading ? (
           <p className="text-slate-400 text-center py-12">Načítání...</p>
+        ) : error ? (
+          <div className="text-center py-20">
+            <p className="text-red-600 font-medium">⚠ {error}</p>
+          </div>
         ) : plans.length === 0 ? (
           <div className="text-center py-20 text-slate-400">
             <Layers className="w-12 h-12 mx-auto mb-4 opacity-30" />
