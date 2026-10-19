@@ -9,7 +9,7 @@ import { createPageUrl } from '@/utils';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
-const LOGO_URL = 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69a5e0c9112f06e35259f886/cd32ffe26_alufen_logo_main_lightbg.jpg';
+const LOGO_URL = '/alufen-logo.png';
 
 const SUPPLIER = { name: 'ALUMINIUM FENCES s.r.o.', street: 'Hemy 830', city: 'Valašské Meziříčí 75701', country: 'Česko' };
 
