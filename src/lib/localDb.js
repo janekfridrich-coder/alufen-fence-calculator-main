@@ -1,47 +1,37 @@
-import { supabase } from '@/api/supabaseClient';
+import { dbRequest } from '@/api/apiClient';
 
-function createEntityStore(tableName) {
+async function call(body) {
+  const { data, error } = await dbRequest(body);
+  if (error) throw new Error(error.message);
+  return data;
+}
+
+function createEntityStore(table) {
   return {
     async list(sort) {
-      let query = supabase.from(tableName).select('*');
-
-    if (sort && typeof sort === 'string') {
-      const desc = sort.startsWith('-');
-      const field = desc ? sort.slice(1) : sort;
-      query = query.order(field, { ascending: !desc });
-    } else {
-      query = query.order('created_date', { ascending: false });
-    }
-
-    const { data, error } = await query;
-      if (error) throw error;
-      return data || [];
+      let order = [['created_date', 'desc']];
+      if (sort && typeof sort === 'string') {
+        const desc = sort.startsWith('-');
+        order = [[desc ? sort.slice(1) : sort, desc ? 'desc' : 'asc']];
+      }
+      return (await call({ action: 'list', table, order })) || [];
     },
 
     async get(id) {
-      const { data, error } = await supabase.from(tableName).select('*').eq('id', id).maybeSingle();
-      if (error) throw error;
-      return data || null;
+      return (await call({ action: 'get', table, id })) || null;
     },
 
     async create(data) {
       const now = new Date().toISOString();
-      const record = { created_date: now, updated_date: now, ...data };
-      const { data: created, error } = await supabase.from(tableName).insert(record).select().single();
-      if (error) throw error;
-      return created;
+      return call({ action: 'insert', table, data: { created_date: now, updated_date: now, ...data } });
     },
 
     async update(id, data) {
-      const record = { ...data, updated_date: new Date().toISOString() };
-      const { data: updated, error } = await supabase.from(tableName).update(record).eq('id', id).select().single();
-      if (error) throw error;
-      return updated;
+      return call({ action: 'update', table, id, data: { ...data, updated_date: new Date().toISOString() } });
     },
 
     async delete(id) {
-      const { error } = await supabase.from(tableName).delete().eq('id', id);
-      if (error) throw error;
+      await call({ action: 'delete', table, id });
       return true;
     },
   };
