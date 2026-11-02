@@ -10,12 +10,27 @@ import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { useAuth } from '@/lib/AuthContext';
 
+const ZAKAZKY_URL = import.meta.env.VITE_ZAKAZKY_URL || 'https://zakazky.alufen.cz';
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+// Vazba na položku nabídky z odkazu v Alufen Zakázkách. Předvyplní jen zákazníka,
+// typ plotu, mezeru a profil vždy volí obchodník.
+function nactiVazbu() {
+const p = new URLSearchParams(window.location.search);
+const nabidka = p.get('nabidka') || '';
+const polozka = p.get('polozka') || '';
+const navrat = p.get('navrat') || '';
+if (!/^\d{7,}$/.test(nabidka) || !UUID.test(polozka) || !UUID.test(navrat)) return null;
+return { nabidka, polozka, navratUrl: `${ZAKAZKY_URL}/nabidka/${navrat}`, zakaznik: p.get('zakaznik') || '' };
+}
+
 export default function CalculatorPage() {
 const [step, setStep] = useState(1);
 const [fenceType, setFenceType] = useState(null); // '2D' or '3D'
 const [fences, setFences] = useState([]);
 const [result, setResult] = useState(null);
-const [customerName, setCustomerName] = useState('');
+const [vazba] = useState(nactiVazbu);
+const [customerName, setCustomerName] = useState(vazba?.zakaznik || '');
 const [packageLengths, setPackageLengths] = useState([DEFAULT_PACKAGE_LENGTH]);
 const { logout } = useAuth();
 
@@ -54,7 +69,8 @@ await CuttingPlan.create({
 name,
 fence_type: fenceType,
 fences: fences.map(f => JSON.stringify(f)),
-result
+result,
+...(vazba ? { nabidka_rodina: vazba.nabidka, nabidka_polozka: vazba.polozka } : {})
 });
 };
 
@@ -95,6 +111,11 @@ Alufen System
 <p className="text-slate-500 text-lg">
 Kalkulačka lamel pro hliníkové ploty
 </p>
+{vazba && (
+<p className="mt-3 inline-block rounded-lg bg-emerald-50 px-4 py-2 text-sm text-emerald-800">
+Počítáš pro nabídku {vazba.nabidka}. Typ plotu, mezeru a profil zvol podle zakázky.
+</p>
+)}
 <div className="mt-4 flex items-center justify-center gap-2">
 <Link to={createPageUrl('History')}>
 <Button variant="ghost" size="sm" className="gap-2 text-slate-500">
@@ -196,6 +217,7 @@ fenceType={fenceType}
 customerName={customerName}
 onReset={handleReset}
 onSave={handleSave}
+navratUrl={vazba?.navratUrl}
 />
 </motion.div>
 )}

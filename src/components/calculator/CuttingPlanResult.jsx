@@ -7,7 +7,7 @@ import FenceDetailCalc from './FenceDetailCalc';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 
-export default function CuttingPlanResult({ result, fences, fenceType, customerName, onReset, onSave }) {
+export default function CuttingPlanResult({ result, fences, fenceType, customerName, onReset, onSave, navratUrl }) {
   const { lamellaPlan, profilePlan, summary } = result;
   const [saveName, setSaveName] = useState('');
   const [saved, setSaved] = useState(false);
@@ -478,7 +478,14 @@ export default function CuttingPlanResult({ result, fences, fenceType, customerN
             Uložit výpočet
           </h3>
           {saved ? (
-            <p className="text-emerald-600 font-medium">✓ Výpočet byl uložen!</p>
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <p className="text-emerald-600 font-medium">✓ Výpočet byl uložen!</p>
+              {navratUrl && (
+                <Button asChild className="bg-emerald-500 hover:bg-emerald-600">
+                  <a href={navratUrl}>Zpět na nabídku</a>
+                </Button>
+              )}
+            </div>
           ) : (
             <div>
               <div className="flex gap-3">
