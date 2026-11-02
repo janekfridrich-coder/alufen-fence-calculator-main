@@ -1,6 +1,6 @@
 import React from 'react';
 
-const LOGO_URL = 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69a5e0c9112f06e35259f886/cd32ffe26_alufen_logo_main_lightbg.jpg';
+const LOGO_URL = '/alufen-logo.png';
 
 const SUPPLIER = {
   name: 'ALUMINIUM FENCES s.r.o.',
