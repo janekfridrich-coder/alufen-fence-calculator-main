@@ -1,6 +1,5 @@
 import React from 'react';
-import { TableProperties, Printer } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { TableProperties } from 'lucide-react';
 
 export default function FenceDetailCalc({ fences, fenceType }) {
   return (
@@ -10,10 +9,6 @@ export default function FenceDetailCalc({ fences, fenceType }) {
           <TableProperties className="w-5 h-5 text-emerald-500" />
           Podrobný výpočet (na každý díl plotu)
         </h3>
-        <Button variant="outline" size="sm" onClick={() => window.print()} className="gap-2 print:hidden">
-          <Printer className="w-4 h-4" />
-          Tisknout
-        </Button>
       </div>
 
       <div className="space-y-8">
