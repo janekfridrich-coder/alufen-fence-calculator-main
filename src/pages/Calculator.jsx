@@ -32,6 +32,7 @@ const [result, setResult] = useState(null);
 const [vazba] = useState(nactiVazbu);
 const [customerName, setCustomerName] = useState(vazba?.zakaznik || '');
 const [packageLengths, setPackageLengths] = useState([DEFAULT_PACKAGE_LENGTH]);
+const [nazevPlanu, setNazevPlanu] = useState('');
 const { logout } = useAuth();
 
 // Load plan from URL if planId is present
@@ -45,6 +46,7 @@ const parsedFences = plan.fences.map(f => typeof f === 'string' ? JSON.parse(f) 
 setFenceType(plan.fence_type);
 setFences(parsedFences);
 setResult(plan.result);
+setNazevPlanu(plan.name || '');
 setStep(3);
 }
 });
@@ -79,6 +81,7 @@ setStep(1);
 setFenceType(null);
 setFences([]);
 setResult(null);
+setNazevPlanu('');
 };
 
 const handleBack = () => {
@@ -215,6 +218,7 @@ result={result}
 fences={fences}
 fenceType={fenceType}
 customerName={customerName}
+nazevPlanu={nazevPlanu}
 onReset={handleReset}
 onSave={handleSave}
 navratUrl={vazba?.navratUrl}
